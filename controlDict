@@ -73,7 +73,7 @@ functions
             {
                 type            distanceSurface;
                 surfaceType     triSurfaceMesh;
-                surfaceName     ground.stl;
+                surfaceName     ground.stl; //ensure this entry matches patch name of chosen surface from mesh
 
                 distance        3;
                 signed          false;
