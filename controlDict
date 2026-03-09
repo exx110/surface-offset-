@@ -1,0 +1,131 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Make sure all utilities know specialised models
+libs            (atmosphericModels);
+
+application     simpleFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         10000;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   1000;
+
+// purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  16;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+    U_3m_normalOffset
+    {
+        type                surfaces;
+        libs                (sampling);
+
+        enabled             true;
+        log                 true;
+
+        executeControl      timeStep;
+        executeInterval     1;
+        writeControl        timeStep;
+        writeInterval       1;
+
+        fields              (U);
+
+        surfaceFormat       vtk;
+        interpolationScheme cell;
+
+        surfaces
+        (
+            terrainOffset3m
+            {
+                type            distanceSurface;
+                surfaceType     triSurfaceMesh;
+                surfaceName     ground.stl;
+
+                distance        3;
+                signed          false;
+
+                // add these back later if needed
+                // isoMethod     cell;
+                // regularise    true;
+            }
+        );
+    }
+}
+    
+    
+
+    // fieldAverage1
+    // {
+    //     type            fieldAverage;
+    //     libs            (fieldFunctionObjects);
+    //     writeControl    writeTime;
+
+    //     fields
+    //     (
+    //         U
+    //         {
+    //             mean        on;
+    //             prime2Mean  off;
+    //             base        time;
+    //         }
+
+    //         ObukhovLength
+    //         {
+    //             mean        on;
+    //             prime2Mean  off;
+    //             base        time;
+    //         }
+
+    //         Ustar
+    //         {
+    //             mean        on;
+    //             prime2Mean  off;
+    //             base        time;
+    //         }
+    //     );
+    // }
+
+    // #includeFunc "turbulenceFields"
+    // #includeFunc "sampleU"
+    // #includeFunc "sampleScalars"
+    // #includeFunc "sampleR"
+
+
+
+
+
+// ************************************************************************* //
