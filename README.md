@@ -31,3 +31,8 @@ Generate a surface offset 3 m from terrain
 Sample velocity U on that surface
 
 Export sampled data
+
+
+
+
+in order to excecute from bash, use command:  postProcess -fields '(U)'
